@@ -61,8 +61,7 @@ Dates follow the course's 13-week project outline (Wednesday classes, no class o
 | 9 | 2 Dec | – | Peer Scoring 2 |
 | 10 | 8 Dec | Software Design Report | Meeting 3 on Design (9 Dec) |
 | 12 | 22 Dec | Software Test Report, Code Freeze | Meeting 4 on Tests (23 Dec) |
-| – | 27 Dec | Codebase | – |
-| 13 | 30 Dec, 12:30 | Final Demo and Presentation | Peer Scoring 3 |
+| 13 | 30 Dec, 12:30 | Codebase (project submission), Final Demo and Presentation | Peer Scoring 3 |
 
 ## 5. Preliminary Cost Estimation
 

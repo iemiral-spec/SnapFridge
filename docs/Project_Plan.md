@@ -280,7 +280,7 @@ gantt
 | Requirement Analysis Report | 2026-11-24 23:59 | Maintain model/API and data-flow analysis during WBS-2.2/3.2/4.1. |
 | Software Design Report | 2026-12-08 23:59 | Consolidate architecture, schema and interface decisions before the deadline; do not defer to WBS-7.1. |
 | Software Test Report | 2026-12-22 23:59 | Incremental test evidence; WBS-6.2 finishes by 20 December; freeze by 21 December and submit report by 22 December. |
-| Codebase | 2026-12-27 23:59 | Tested cloud release by 21 December; only reviewed blocking fixes after freeze; final tag before deadline. |
+| Codebase (project submission) | 2026-12-30 12:30 | Tested cloud release by 21 December; only reviewed blocking fixes after freeze; final tag before the demo. |
 | Demo and Presentation | 2026-12-30 12:30 | WBS-7.2 completes by 27 December; maintain separate user demo and technical presentation. |
 
 **Schedule consistency check:** All 14 WBS activities have estimates, owners, predecessors and matching Gantt dates. Each uses effort = duration × 0.25 FTE. No owner exceeds 0.25 FTE in any scheduled week. The dependency network finishes at week 8. Required report work is continuous and uses uncommitted capacity before each milestone; WBS-7.1 is final consolidation, not the start of reporting. Weekly reviews update estimates, record actual effort and verify milestone readiness. The charter's exact deadlines are the baseline; later instructor announcements take precedence if changed.
