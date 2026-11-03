@@ -10,7 +10,7 @@
 
 ## 1. Project Description
 
-SnapFridge is a web application that helps users decide what to cook with the ingredients they already have. The user uploads a photo of their fridge or kitchen counter, an AI vision service lists the ingredients it recognizes, the user corrects the list, and the system suggests recipes from a recipe database. The domain is food and lifestyle; the main users are students, employees and home cooks.
+SnapFridge is a web application that helps users decide what to cook with the ingredients they already have. The user uploads a photo of their fridge or kitchen counter, an AI vision service marks the ingredients it recognizes on a list of common ingredients, the user corrects the selection or picks ingredients manually, and the system suggests recipes from a recipe database. The domain is food and lifestyle; the main users are students, employees and home cooks.
 
 ## 2. Objectives and Outcomes
 
@@ -23,7 +23,8 @@ SnapFridge is a web application that helps users decide what to cook with the in
 **Outcomes (in scope)**
 
 - Registration, login and role-based authorization (User / Admin)
-- Photo upload and AI-based ingredient recognition, with user correction
+- Photo upload and AI-based ingredient recognition: one AI call per photo, results split into "sure" and "not sure"
+- Ingredient selection screen with about 50 common ingredients and a search box; works with or without a photo
 - Recipe dataset (TheMealDB; Kaggle as fallback) imported into PostgreSQL
 - Ingredient-based recipe suggestions with recipe details and missing ingredients
 - Favorite recipes
@@ -72,8 +73,8 @@ Dates follow the course's 13-week project outline (Wednesday classes, no class o
 
 | Risk | Impact | Response |
 |---|---|---|
-| AI recognizes ingredients wrongly | Wrong recipe suggestions | User always checks and edits the list; manual entry as fallback |
-| Vision API cost, quota or downtime | Main flow stops | Limit calls, use test images, allow manual ingredient entry |
+| AI recognizes ingredients wrongly | Wrong recipe suggestions | AI chooses only from the common list; uncertain items shown separately; user always confirms |
+| Vision API cost, quota or downtime | Main flow stops | One call per photo; users can still pick ingredients from the list without the AI |
 | Recipe dataset licence or coverage is not adequate | Few or no matches | Switch to a Kaggle dataset or a smaller hand-picked set |
 | Exams and other courses slow the team | Missed deadlines | Small core scope, weekly check-in, optional features dropped first |
 | Scope grows after customer meetings | Schedule slips | New requests go to the optional list unless the customer approves a trade-off |
