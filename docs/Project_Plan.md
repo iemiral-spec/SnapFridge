@@ -13,7 +13,7 @@
 | Submission date | 2026-11-03 |
 | Document version | 1.0 |
 
-Repository: https://github.com/ailkery/SnapFridge
+Repository: https://github.com/iemiral-spec/SnapFridge
 
 ## 1. Introduction
 
