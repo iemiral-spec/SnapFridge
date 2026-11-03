@@ -118,7 +118,7 @@ T = Tiny; S = Small; M = Medium; L = Large; XL = Extra-large.
 
 **Estimation method:** Bottom-up estimates use M = 10 hours (0.25 person-week) and L = 20 hours (0.50 person-week). For re-estimation, T = 3 hours, S = 5 hours and XL = 40 hours; split XL activities before scheduling. AI coding assistants are expected to shorten routine coding; review time is included in each estimate. Sizes are effort estimates, not complexity guarantees. Estimates include tests and review and should be revised after the first integration milestone.
 
-**Effort versus duration:** At 0.25 FTE, a 0.50-person-week activity spans two calendar weeks. Parallel tasks reduce elapsed time only when separate members are available. The baseline contains 4.25 person-weeks of effort across nine calendar weeks; these are different quantities.
+**Effort versus duration:** At 0.25 FTE, a 0.50-person-week activity spans two calendar weeks. Parallel tasks reduce elapsed time only when separate members are available. The baseline contains 4.25 person-weeks of effort across eight calendar weeks; these are different quantities.
 
 ## 4. Resources
 
@@ -151,7 +151,7 @@ T = Tiny; S = Small; M = Medium; L = Large; XL = Extra-large.
 | WBS-7.1 | Talha Arpacık | Finalize documentation and AI evidence; coordinate necessary peer review. | 0.25 |
 | WBS-7.2 | Ahmet İlker Yıldızlı | Rehearse demo and presentation; coordinate necessary peer review. | 0.25 |
 
-**Availability or allocation constraints:** No member owns overlapping scheduled activities, and each member has two or three activities. Allocations are weekly averages. At 10 hours/member/week the nine-week capacity is 450 hours; 170 hours are committed to baseline activities and the rest is kept for course reports, reviews, meetings, exams and delays. Actual availability must be checked weekly, especially around the 18 November break and 25 November midterm. Review effort fits inside the activity estimate and the reviewer’s uncommitted capacity.
+**Availability or allocation constraints:** No member owns overlapping scheduled activities, and each member has two or three activities. Allocations are weekly averages. At 10 hours/member/week the eight-week capacity is 400 hours; 170 hours are committed to baseline activities and the rest is kept for course reports, reviews, meetings, exams and delays. Actual availability must be checked weekly, especially around the 18 November break and 25 November midterm. Review effort fits inside the activity estimate and the reviewer’s uncommitted capacity.
 
 **Collaboration and configuration:** Use GitHub Issues/Projects with Backlog → Ready → In progress → Review/Test → Done. Each card identifies task/WBS, owner, acceptance conditions and evidence. Use short feature branches, reviewed PRs, CI checks and tagged release baselines. Ahmet manages configuration; no secrets enter source control. Communication: a weekly 30-minute online team meeting and one agreed messaging channel; İdil records decisions and blockers. Biray owns scope changes: a new request is written down, its effort is estimated and the customer decides before anyone implements it.
 
@@ -179,7 +179,8 @@ flowchart TD
     W62["WBS-6.2: Validate release and deploy (1w)"]
     W71["WBS-7.1: Finalize documentation and AI evidence (1w)"]
     W72["WBS-7.2: Rehearse demo and presentation (1w)"]
-    W11 --> W12
+    W11 --> W21
+    W11 --> W22
     W12 --> W21
     W12 --> W22
     W21 --> W31
@@ -208,10 +209,10 @@ flowchart TD
 
 | Activity | Predecessors | Duration (weeks) | Start | Finish (exclusive) | Total float (weeks) |
 |---|---|---|---|---|---|
-| WBS-1.1 | None | 1 | 2026-10-26 | 2026-11-02 | 0 |
-| WBS-1.2 | WBS-1.1 | 1 | 2026-11-02 | 2026-11-09 | 0 |
-| WBS-2.1 | WBS-1.2 | 1 | 2026-11-09 | 2026-11-16 | 0 |
-| WBS-2.2 | WBS-1.2 | 1 | 2026-11-09 | 2026-11-16 | 0 |
+| WBS-1.1 | None | 1 | 2026-11-02 | 2026-11-09 | 0 |
+| WBS-1.2 | None | 1 | 2026-11-02 | 2026-11-09 | 0 |
+| WBS-2.1 | WBS-1.1, WBS-1.2 | 1 | 2026-11-09 | 2026-11-16 | 0 |
+| WBS-2.2 | WBS-1.1, WBS-1.2 | 1 | 2026-11-09 | 2026-11-16 | 0 |
 | WBS-3.1 | WBS-2.1, WBS-2.2 | 1 | 2026-11-16 | 2026-11-23 | 1 |
 | WBS-3.2 | WBS-2.1, WBS-2.2 | 2 | 2026-11-16 | 2026-11-30 | 0 |
 | WBS-4.1 | WBS-2.2 | 2 | 2026-11-16 | 2026-11-30 | 0 |
@@ -229,12 +230,11 @@ flowchart TD
 
 There are multiple equal-length critical paths. One is:
 
-`WBS-1.1 → WBS-1.2 → WBS-2.2 → WBS-4.1 → WBS-5.1 → WBS-5.2 → WBS-6.2 → WBS-7.2`
+`WBS-1.1 → WBS-2.2 → WBS-4.1 → WBS-5.1 → WBS-5.2 → WBS-6.2 → WBS-7.2`
 
 | Critical-path activity ID | Duration (weeks) | Reason it is critical |
 |---|---|---|
 | WBS-1.1 | 1 | Zero total float; delays the final preparation finish unless recovered. |
-| WBS-1.2 | 1 | Zero total float; delays the final preparation finish unless recovered. |
 | WBS-2.2 | 1 | Zero total float; delays the final preparation finish unless recovered. |
 | WBS-4.1 | 2 | Zero total float; delays the final preparation finish unless recovered. |
 | WBS-5.1 | 1 | Zero total float; delays the final preparation finish unless recovered. |
@@ -242,19 +242,19 @@ There are multiple equal-length critical paths. One is:
 | WBS-6.2 | 1 | Zero total float; delays the final preparation finish unless recovered. |
 | WBS-7.2 | 1 | Zero total float; delays the final preparation finish unless recovered. |
 
-**Total project schedule:** **9 weeks**, from **2026-10-26** to **2026-12-28** (finish boundary). The external demo/presentation occurs **2026-12-30 at 12:30**, leaving two calendar days after preparation; this reserve is outside the nine-week network.
+**Total project schedule:** **8 weeks**, from **2026-11-02** to **2026-12-28** (finish boundary). The external demo/presentation occurs **2026-12-30 at 12:30**, leaving two calendar days after preparation; this reserve is outside the eight-week network.
 
-**Critical-path explanation:** The displayed path totals 1+1+1+2+1+1+1+1 = 9 weeks. WBS-2.1 → WBS-3.2 forms an equally long branch from WBS-1.2 to WBS-5.1; WBS-2.2 also precedes WBS-3.2. WBS-7.1 is parallel and equal in duration to WBS-6.2, so replacing WBS-6.2 with WBS-7.1 also yields a critical path. Highlighted nodes are the union of these critical paths. WBS-3.1, WBS-4.2 and WBS-6.1 each have one week of dependency float. Resource conflicts must still be checked before consuming float.
+**Critical-path explanation:** The displayed path totals 1+1+2+1+1+1+1 = 8 weeks. WBS-1.1 (scope, confirmed in the 4 November customer meeting) and WBS-1.2 (setup) run in parallel in the first week, so WBS-1.2 can replace WBS-1.1 on the path. WBS-2.1 → WBS-3.2 forms an equally long branch to WBS-5.1; WBS-2.2 also precedes WBS-3.2. WBS-7.1 is parallel and equal in duration to WBS-6.2, so replacing WBS-6.2 with WBS-7.1 also yields a critical path. Highlighted nodes are the union of these critical paths. WBS-3.1, WBS-4.2 and WBS-6.1 each have one week of dependency float. Resource conflicts must still be checked before consuming float.
 
 ### 5.3 Gantt Chart — Project Timeline
 
 ```mermaid
 gantt
-    title SnapFridge — Baseline 26 October to 28 December 2026
+    title SnapFridge — Baseline 2 November to 28 December 2026
     dateFormat YYYY-MM-DD
     axisFormat %d %b
     section Activities
-    WBS-1.1 Confirm scope and acceptance tests :crit, w11, 2026-10-26, 7d
+    WBS-1.1 Confirm scope and acceptance tests :crit, w11, 2026-11-02, 7d
     WBS-1.2 Set up architecture and configuration baseline :crit, w12, 2026-11-02, 7d
     WBS-2.1 Implement authentication and roles :crit, w21, 2026-11-09, 7d
     WBS-2.2 Create database and recipe import :crit, w22, 2026-11-09, 7d
@@ -283,7 +283,7 @@ gantt
 | Codebase | 2026-12-27 23:59 | Tested cloud release by 21 December; only reviewed blocking fixes after freeze; final tag before deadline. |
 | Demo and Presentation | 2026-12-30 12:30 | WBS-7.2 completes by 27 December; maintain separate user demo and technical presentation. |
 
-**Schedule consistency check:** All 14 WBS activities have estimates, owners, predecessors and matching Gantt dates. Each uses effort = duration × 0.25 FTE. No owner exceeds 0.25 FTE in any scheduled week. The dependency network finishes at week 9. Required report work is continuous and uses uncommitted capacity before each milestone; WBS-7.1 is final consolidation, not the start of reporting. Weekly reviews update estimates, record actual effort and verify milestone readiness. The charter's exact deadlines are the baseline; later instructor announcements take precedence if changed.
+**Schedule consistency check:** All 14 WBS activities have estimates, owners, predecessors and matching Gantt dates. Each uses effort = duration × 0.25 FTE. No owner exceeds 0.25 FTE in any scheduled week. The dependency network finishes at week 8. Required report work is continuous and uses uncommitted capacity before each milestone; WBS-7.1 is final consolidation, not the start of reporting. Weekly reviews update estimates, record actual effort and verify milestone readiness. The charter's exact deadlines are the baseline; later instructor announcements take precedence if changed.
 
 ## 6. Risks
 
