@@ -8,7 +8,7 @@
 | Report name | Project Plan |
 | Project title | SnapFridge |
 | Group name / number | SnapFridge; 2 |
-| Group members | Biray Dağlı - 150210211; Ahmet İlker Yıldızlı - 150210215; Umut Uğurlu - 150230213; Talha Arpacık - 150220213; İdil Emiral - 150230223 |
+| Group members | Biray Dağlı - 150210215; Ahmet İlker Yıldızlı - 150210211; Umut Uğurlu - 150230213; Talha Arpacık - 150220213; İdil Emiral - 150230223 |
 | Instructor | Res. Asst. Dr. Abdullah Cihan AK |
 | Submission date | 2026-11-03 |
 | Document version | 1.0 |
@@ -125,8 +125,8 @@ T = Tiny; S = Small; M = Medium; L = Large; XL = Extra-large.
 
 | Member | Student ID | Role(s) | Main responsibilities |
 |---|---|---|---|
-| Biray Dağlı | 150210211 | Project Manager + Backend Developer | Own scope, planning and backend integration; coordinate acceptance with the instructor/customer. |
-| Ahmet İlker Yıldızlı | 150210215 | Configuration Manager + Frontend Developer | Maintain GitHub workflow, CI/configuration and React interface; own release/demo configuration. |
+| Biray Dağlı | 150210215 | Project Manager + Backend Developer | Own scope, planning and backend integration; coordinate acceptance with the instructor/customer. |
+| Ahmet İlker Yıldızlı | 150210211 | Configuration Manager + Frontend Developer | Maintain GitHub workflow, CI/configuration and React interface; own release/demo configuration. |
 | Umut Uğurlu | 150230213 | Test Manager + Backend Developer | Define test strategy, acceptance tests, backend test review and system/security validation. |
 | Talha Arpacık | 150220213 | Documentation Lead + AI Integration Developer | Build vision adapter; maintain reports and AI contribution/review/error evidence. |
 | İdil Emiral | 150230223 | Communication Lead + Database Developer | Own data model/import and data services; organize and record team/customer communication. |
