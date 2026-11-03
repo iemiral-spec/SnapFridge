@@ -39,8 +39,8 @@ SnapFridge is a web application that helps users decide what to cook with the in
 
 | Member | Student ID | Role |
 |---|---|---|
-| Biray Dağlı | 150210211 | Project Manager + Backend Developer |
-| Ahmet İlker Yıldızlı | 150210215 | Configuration Manager + Frontend Developer |
+| Biray Dağlı | 150210215 | Project Manager + Backend Developer |
+| Ahmet İlker Yıldızlı | 150210211 | Configuration Manager + Frontend Developer |
 | Umut Uğurlu | 150230213 | Test Manager + Backend Developer |
 | Talha Arpacık | 150220213 | Documentation Lead + AI Integration Developer |
 | İdil Emiral | 150230223 | Communication Lead + Database Developer |
