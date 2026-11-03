@@ -274,7 +274,7 @@ gantt
 | Milestone | Deadline | Planned preparation / evidence |
 |---|---|---|
 | Project Charter | 2026-10-13 23:59 | Charter used as the baseline for this plan. |
-| Project Plan | 2026-10-28 23:59 | This document. |
+| Project Plan | 2026-10-28 23:59 | This document (submitted 2026-11-03). |
 | Requirement Specification Report | 2026-11-10 23:59 | Confirm requirements and test examples during WBS-1.1/1.2; refine during early implementation. |
 | Requirement Analysis Report | 2026-11-24 23:59 | Maintain model/API and data-flow analysis during WBS-2.2/3.2/4.1. |
 | Software Design Report | 2026-12-08 23:59 | Consolidate architecture, schema and interface decisions before the deadline; do not defer to WBS-7.1. |
