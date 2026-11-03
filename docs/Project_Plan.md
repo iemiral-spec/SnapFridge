@@ -23,7 +23,8 @@ Repository: https://github.com/iemiral-spec/SnapFridge
 
 **In scope:**
 - Registration, login and server-side User/Admin authorization.
-- Photo upload, vision-LLM ingredient recognition and user confirmation/correction of detected ingredients.
+- Photo upload with one vision-LLM call per photo. The AI picks ingredients only from a fixed list of about 50 common ingredients and returns them in two groups: "sure" and "not sure".
+- Ingredient selection screen: detected ingredients appear pre-selected; the user removes wrong ones and adds missing ones from the common-ingredient list or a search box. Users can also skip the photo and pick ingredients directly.
 - Import of an existing recipe dataset (TheMealDB or a suitable Kaggle dataset) into PostgreSQL after checking permission and attribution requirements.
 - Ingredient-based recipe ranking, recipe details and missing-ingredient display.
 - Favorite recipes and simple admin recipe management (add, edit, delete).
@@ -42,7 +43,7 @@ Repository: https://github.com/iemiral-spec/SnapFridge
 |---|---|---|---|
 | D-01 | Versioned engineering baseline | Repository, CI, API contracts, configuration and acceptance-test baseline. | A clean checkout runs documented checks; a failing check prevents acceptance of a PR. |
 | D-02 | Account and data services | Authentication, User/Admin roles, PostgreSQL schema and recipe import script. | Account tests pass; non-admin cannot access admin operations; recipes are loaded into the database by the import script. |
-| D-03 | Photo and recognition module | Photo upload, vision API call and editable ingredient list. | A valid photo returns an editable ingredient list; a wrong file type or an API error shows a clear message. |
+| D-03 | Photo and recognition module | Photo upload, one vision API call per photo, common-ingredient list and ingredient selection screen. | A valid photo returns "sure" and "not sure" ingredients from the common list; the user can edit the selection or pick manually; a wrong file type or an API error shows a clear message and manual selection still works. |
 | D-04 | Recipe recommendation interface | React screens, matching API and recipe details. | Confirmed ingredients produce ranked dataset recipes and show missing ingredients; empty results are explained. |
 | D-05 | Favorites | Users save recipes they like. | Users can add/remove favorites and see only their own favorites. |
 | D-06 | Admin and deployed release | Admin recipe management and the integrated cloud application. | Admin can add/edit/delete recipes; the main user workflow works on the hosted release. |
@@ -55,7 +56,7 @@ Repository: https://github.com/iemiral-spec/SnapFridge
 |---|---|---|---|
 | T-01 | Establish delivery baseline | Confirm scope, testable acceptance conditions and configuration workflow. | D-01, D-07 |
 | T-02 | Manage identities and recipe data | Provide accounts/roles and import recipes. | D-02 |
-| T-03 | Recognize photo ingredients | Validate upload, recognize ingredients, permit correction and handle failure. | D-03 |
+| T-03 | Recognize photo ingredients | Validate upload, recognize ingredients from the common list with one AI call, let the user correct or pick manually, and handle failure. | D-03 |
 | T-04 | Suggest and display recipes | Rank recipes using confirmed ingredients and expose accessible web screens. | D-04 |
 | T-05 | Integrate workflow and favorites | Connect all parts end to end and store favorites per user. | D-05 |
 | T-06 | Administer and release system | Manage recipes and deploy the complete application. | D-06 |
@@ -69,7 +70,7 @@ Repository: https://github.com/iemiral-spec/SnapFridge
 | Performance | Normal pages (recipe list, details, favorites) open in about 2 seconds; a photo analysis finishes or shows an error within 30 seconds. | Manual timing on the deployed app with the imported recipe data. |
 | Usability | Simple main workflow; loading and error messages are visible; ingredients are editable. | Three classmates try the photo-to-recipe flow and we note their feedback. |
 | Reliability | Users see friendly error messages, not crashes; the same recipe cannot be favorited twice. | Tests for API errors and duplicate favorites; smoke test after each deployment. |
-| Recognition quality | The AI result is a suggestion; the user always checks and edits the list. | Try 10 sample fridge photos and note what was found correctly and what was missed. |
+| Recognition quality | One AI call per photo, no automatic retries. The AI result is a suggestion limited to the common-ingredient list; the user always checks it and can add missing items manually. | Try 10 sample fridge photos and note what was found correctly, what was marked "not sure" and what was missed. |
 | Maintainability | Every feature comes with tests and one reviewer's approval; everything is versioned on GitHub. | Each PR links its WBS ID and passes the GitHub Actions tests. |
 
 ## 2. Project Plan — Work Breakdown Structure (WBS)
@@ -83,9 +84,9 @@ T = Tiny; S = Small; M = Medium; L = Large; XL = Extra-large.
 | WBS-2.1 | T-02 | Implement authentication and roles | Test and implement registration, login, password hashing, JWT validation and server-side User/Admin permissions. | M |
 | WBS-2.2 | T-02 | Create database and recipe import | Create the tables and a script that loads recipes and their ingredients from the dataset. | M |
 | WBS-3.1 | T-03 | Implement photo upload | Accept JPEG/PNG up to 10 MB from logged-in users, do not store the image, and test wrong files. | M |
-| WBS-3.2 | T-03 | Integrate ingredient recognition | Send the photo to a vision API, turn the answer into an ingredient list matching dataset names, and handle errors and timeouts. | L |
+| WBS-3.2 | T-03 | Integrate ingredient recognition | Build the common-ingredient list (~50 items, using dataset names); send each photo to the vision API once, asking it to choose only from that list and to split results into "sure" and "not sure"; handle errors and timeouts. | L |
 | WBS-4.1 | T-04 | Implement recipe matching | Rank recipes by how many of their ingredients the user has, return missing ingredients and recipe details; test with sample data. | L |
-| WBS-4.2 | T-04 | Build main React interfaces | Implement login, upload, editable ingredient list, recipe results/detail and API adapters using sample API responses. | L |
+| WBS-4.2 | T-04 | Build main React interfaces | Implement login, upload, ingredient selection screen (clickable common-ingredient tags, "not sure" section, search box), recipe results/detail and API adapters using sample API responses. | L |
 | WBS-5.1 | T-05 | Integrate complete analysis workflow | Connect frontend, recognition and matching; the photo-to-recipe flow works end to end. | M |
 | WBS-5.2 | T-05 | Complete favorites | Add/remove/list favorites for the logged-in user and connect the UI; test that users see only their own favorites. | M |
 | WBS-6.1 | T-06 | Implement admin management | Admin page to add, edit and delete recipes; test that normal users are denied. | M |
@@ -316,10 +317,10 @@ Both probability and impact use 1 (lowest) to 5 (highest). Register order is asc
 | R-01 | WBS-3.1, WBS-6.2 | Keep secrets server-side; validate uploads; delete transient images; review access checks. | Umut Uğurlu | Revoke/rotate credentials, remove exposed content, fix access defect and retest before release. |
 | R-02 | WBS-6.2, WBS-7.2 | Check service limits and budget early; rehearse cloud deployment and retain local run instructions. | Ahmet İlker Yıldızlı | Restore the verified build or alternate approved cloud configuration; use recorded demo only as presentation fallback, not as cloud-delivery replacement. |
 | R-03 | WBS-2.2, WBS-4.1 | Check the dataset licence and try a small import early in WBS-2.2. | İdil Emiral | Switch to a Kaggle dataset or a smaller hand-picked recipe set with the same tables. |
-| R-04 | WBS-3.2, WBS-5.1 | Use a provider adapter, bounded calls and structured response validation; mock failure cases. | Talha Arpacık | Offer manual ingredient entry for continuity and cached labeled demo results; restore actual recognition before core acceptance. |
+| R-04 | WBS-3.2, WBS-5.1 | One call per photo, no retries; check the AI answer is a valid list; test failure cases with sample responses. | Talha Arpacık | Users pick ingredients from the common-ingredient list, so the app keeps working without the AI. |
 | R-05 | WBS-2.1, WBS-3.2, WBS-6.2 | Write tests first, review generated changes and log AI errors and corrections. | Umut Uğurlu | Revert defective changes; reproduce failure with a regression test and apply reviewed correction. |
 | R-06 | WBS-3.2, WBS-4.1, WBS-6.2 | Review availability weekly; pair on critical modules; record handover notes and use uncommitted capacity. | Biray Dağlı | Reassign work with impact review; drop optional generation and escalate threatened mandatory milestones early. |
-| R-07 | WBS-3.2, WBS-5.1 | Require ingredient confirmation/editing; evaluate on labeled varied-lighting photos. | Talha Arpacık | Use corrected/manual ingredients and report measured recognition limitations; do not represent guesses as verified contents. |
+| R-07 | WBS-3.2, WBS-5.1 | Limit the AI to the common-ingredient list, show uncertain items separately and require user confirmation. | Talha Arpacık | The user fixes the selection manually; we report the recognition limits we observed. |
 | R-08 | WBS-1.1, WBS-5.2, WBS-7.2 | Keep a small core scope; every new request goes to the optional list first. | Biray Dağlı | Postpone optional features; change the plan only after the customer agrees. |
 
 **Review cadence:** Review risks weekly and at each customer checkpoint. Owners record triggers, actions and residual risks in GitHub Issues.
