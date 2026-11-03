@@ -10,7 +10,7 @@
 | Group name / number | SnapFridge; 2 |
 | Group members | Biray Dağlı - 150210211; Ahmet İlker Yıldızlı - 150210215; Umut Uğurlu - 150230213; Talha Arpacık - 150220213; İdil Emiral - 150230223 |
 | Instructor | Res. Asst. Dr. Abdullah Cihan AK |
-| Submission date | 2026-10-28 |
+| Submission date | 2026-11-03 |
 | Document version | 1.0 |
 
 Repository: https://github.com/ailkery/SnapFridge
