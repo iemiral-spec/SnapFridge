@@ -66,7 +66,7 @@ Dates follow the course's 13-week project outline (Wednesday classes, no class o
 
 ## 5. Preliminary Cost Estimation
 
-- **Effort:** about 170 person-hours of development work (5 members × ~10 hours/week over 9 weeks for project activities), plus time for reports and meetings.
+- **Effort:** about 170 person-hours of development work (5 members × ~10 hours/week over 8 weeks, 2 November – 28 December, for project activities), plus time for reports and meetings.
 - **Money:** no budget. We use free tiers and student offers: GitHub (Student Pack), Render free tier, PostgreSQL on Render, TheMealDB. The vision API is pay-per-use; we will pick a provider with a free tier or student credits and limit calls during development.
 
 ## 6. Preliminary Risks
