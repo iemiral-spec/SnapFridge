@@ -1,0 +1,18 @@
+[
+  {"title": "Menemen", "instructions": "Chop onion and bell pepper, fry in olive oil. Add chopped tomato and cook until soft. Crack the eggs in, stir gently, season with salt and black pepper.",
+   "ingredients": [{"name": "egg", "measure": "3"}, {"name": "tomato", "measure": "2"}, {"name": "bell pepper", "measure": "2"}, {"name": "onion", "measure": "1"}, {"name": "olive oil", "measure": "2 tbsp"}, {"name": "salt", "measure": "pinch"}]},
+  {"title": "Tomato Pasta", "instructions": "Boil pasta. Fry garlic in olive oil, add chopped tomato and tomato paste, simmer 10 minutes. Mix with pasta and top with basil.",
+   "ingredients": [{"name": "pasta", "measure": "200 g"}, {"name": "tomato", "measure": "3"}, {"name": "garlic", "measure": "2 cloves"}, {"name": "tomato paste", "measure": "1 tbsp"}, {"name": "olive oil", "measure": "2 tbsp"}, {"name": "basil", "measure": "few leaves"}]},
+  {"title": "Omelette with Cheese", "instructions": "Beat eggs with milk and salt. Melt butter in a pan, pour eggs, add cheese, fold and serve.",
+   "ingredients": [{"name": "egg", "measure": "3"}, {"name": "milk", "measure": "2 tbsp"}, {"name": "cheese", "measure": "50 g"}, {"name": "butter", "measure": "1 tsp"}, {"name": "salt", "measure": "pinch"}]},
+  {"title": "Red Lentil Soup", "instructions": "Fry onion and carrot in olive oil, add tomato paste and lentils, cover with water and cook 25 minutes. Blend and squeeze lemon.",
+   "ingredients": [{"name": "lentils", "measure": "1 cup"}, {"name": "onion", "measure": "1"}, {"name": "carrot", "measure": "1"}, {"name": "tomato paste", "measure": "1 tbsp"}, {"name": "olive oil", "measure": "2 tbsp"}, {"name": "lemon", "measure": "1/2"}, {"name": "water", "measure": "1 l"}]},
+  {"title": "Chicken and Rice", "instructions": "Brown chicken pieces with onion and garlic, add rice and water, cook covered for 20 minutes.",
+   "ingredients": [{"name": "chicken", "measure": "300 g"}, {"name": "rice", "measure": "1 cup"}, {"name": "onion", "measure": "1"}, {"name": "garlic", "measure": "2 cloves"}, {"name": "butter", "measure": "1 tbsp"}, {"name": "water", "measure": "2 cups"}]},
+  {"title": "Potato Omelette", "instructions": "Fry sliced potato and onion in olive oil until soft. Pour beaten eggs over and cook both sides.",
+   "ingredients": [{"name": "potato", "measure": "2"}, {"name": "egg", "measure": "4"}, {"name": "onion", "measure": "1"}, {"name": "olive oil", "measure": "3 tbsp"}, {"name": "salt", "measure": "pinch"}]},
+  {"title": "Banana Pancakes", "instructions": "Mash banana, mix with egg, milk and flour. Cook small pancakes in butter. Serve with honey.",
+   "ingredients": [{"name": "banana", "measure": "1"}, {"name": "egg", "measure": "1"}, {"name": "milk", "measure": "1/2 cup"}, {"name": "flour", "measure": "1/2 cup"}, {"name": "butter", "measure": "1 tsp"}, {"name": "honey", "measure": "1 tbsp"}]},
+  {"title": "Yogurt Cucumber Salad (Cacik)", "instructions": "Grate cucumber, mix with yogurt, garlic and a little water. Add olive oil on top.",
+   "ingredients": [{"name": "yogurt", "measure": "2 cups"}, {"name": "cucumber", "measure": "1"}, {"name": "garlic", "measure": "1 clove"}, {"name": "olive oil", "measure": "1 tbsp"}, {"name": "water", "measure": "1/2 cup"}]}
+]
