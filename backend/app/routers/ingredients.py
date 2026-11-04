@@ -46,7 +46,8 @@ async def recognize(photo: UploadFile = File(...), user: User = Depends(get_curr
         raise HTTPException(400, "Fotoğraf boş.")
     # Fotoğraf kaydedilmez; sadece bellekte işlenir (plan: images are transient).
     try:
-        result = get_provider().recognize(data, photo.content_type)
+        provider = get_provider()
+        result = provider.recognize(data, photo.content_type)
     except VisionError as exc:
         raise HTTPException(502, f"{exc} Malzemeleri listeden elle seçebilirsiniz.")
-    return RecognitionOut(**result)
+    return RecognitionOut(**result, demo=provider.is_demo)

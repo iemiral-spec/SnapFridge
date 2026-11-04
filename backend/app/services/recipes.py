@@ -2,13 +2,13 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from ..ingredients_list import COMMON_INGREDIENTS, normalize
+from ..ingredients_list import COMMON_INGREDIENTS, canonical, normalize
 from ..models import Ingredient, Recipe, RecipeIngredient
 from ..schemas import RecipeDetail, RecipeIngredientOut, RecipeIn
 
 
 def get_or_create_ingredient(db: Session, name: str) -> Ingredient:
-    name = normalize(name)
+    name = canonical(name)
     ing = db.scalar(select(Ingredient).where(Ingredient.name == name))
     if ing is None:
         ing = Ingredient(name=name, is_common=name in COMMON_INGREDIENTS)
@@ -35,7 +35,10 @@ def apply_recipe_data(db: Session, recipe: Recipe, data: RecipeIn) -> Recipe:
         if ing.id in seen:
             continue
         seen.add(ing.id)
-        recipe.ingredients.append(RecipeIngredient(ingredient=ing, measure=item.measure))
+        label = normalize(item.label or item.name)
+        recipe.ingredients.append(
+            RecipeIngredient(ingredient=ing, measure=item.measure, label=label if label != ing.name else "")
+        )
     return recipe
 
 
@@ -46,5 +49,5 @@ def to_detail(recipe: Recipe) -> RecipeDetail:
         image_url=recipe.image_url,
         instructions=recipe.instructions,
         source=recipe.source,
-        ingredients=[RecipeIngredientOut(name=ri.ingredient.name, measure=ri.measure) for ri in recipe.ingredients],
+        ingredients=[RecipeIngredientOut(name=ri.ingredient.name, measure=ri.measure, label=ri.label) for ri in recipe.ingredients],
     )

@@ -9,8 +9,8 @@ class Settings(BaseSettings):
     database_url: str = "sqlite:///./snapfridge.db"
     jwt_secret: str = "dev-only-secret-change-me"
     jwt_expire_minutes: int = 60 * 24
-    vision_provider: str = "mock"
-    vision_api_key: str = ""
+    vision_provider: str = "mock"  # mock | claude
+    anthropic_api_key: str = ""
     cors_origins: str = "http://localhost:5173"
     max_upload_bytes: int = 10 * 1024 * 1024  # 10 MB (plan: NFR Security)
 

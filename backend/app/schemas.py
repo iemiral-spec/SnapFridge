@@ -21,6 +21,7 @@ class UserOut(BaseModel):
 class RecognitionOut(BaseModel):
     sure: list[str]
     unsure: list[str]
+    demo: bool = False  # True: sahte (mock) sağlayıcı, fotoğrafa gerçekten bakılmadı
 
 
 class MatchIn(BaseModel):
@@ -30,6 +31,7 @@ class MatchIn(BaseModel):
 class RecipeIngredientOut(BaseModel):
     name: str
     measure: str = ""
+    label: str = ""  # tarifte yazdığı gibi; boşsa name kullanılır
 
 
 class RecipeSummary(BaseModel):

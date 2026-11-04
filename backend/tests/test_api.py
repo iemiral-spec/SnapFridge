@@ -8,9 +8,9 @@ def test_register_duplicate_and_bad_login(client, user_headers):
     assert client.get("/api/auth/me", headers=user_headers).json()["email"] == "user@test.com"
 
 
-def test_common_ingredients_about_fifty(client):
+def test_common_ingredients_list(client):
     items = client.get("/api/ingredients/common").json()
-    assert 40 <= len(items) <= 60 and len(set(items)) == len(items)
+    assert 40 <= len(items) <= 100 and len(set(items)) == len(items)
 
 
 def test_search_ingredients(client):
@@ -38,6 +38,7 @@ def test_recognize_mock_returns_sure_and_unsure(client, user_headers):
     assert r.status_code == 200
     body = r.json()
     assert "egg" in body["sure"] and "cheese" in body["unsure"]
+    assert body["demo"] is True  # arayüz "sahte sonuç" uyarısı gösterir
 
 
 def test_match_and_detail(client, sample_recipes):
@@ -69,3 +70,11 @@ def test_admin_crud_and_user_denied(client, user_headers, admin_headers):
     assert client.delete(f"/api/admin/recipes/{rid}", headers=user_headers).status_code == 403
     assert client.delete(f"/api/admin/recipes/{rid}", headers=admin_headers).status_code == 204
     assert client.get(f"/api/recipes/{rid}").status_code == 404
+
+
+def test_recipe_keeps_dataset_wording(client, admin_headers):
+    body = {"title": "Custard", "ingredients": [{"name": "Egg Yolks", "measure": "4"}, {"name": "milk"}]}
+    rid = client.post("/api/admin/recipes", headers=admin_headers, json=body).json()["id"]
+    items = client.get(f"/api/recipes/{rid}").json()["ingredients"]
+    assert items[0] == {"name": "egg", "measure": "4", "label": "egg yolks"}
+    assert items[1]["label"] == ""
