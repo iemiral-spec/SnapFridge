@@ -6,7 +6,8 @@ Kurallar (plan):
 - Sonuç iki grup: "sure" (emin) ve "unsure" (emin değil).
 
 Sağlayıcılar (.env içindeki VISION_PROVIDER):
-- "claude": Anthropic Claude (gerçek tanıma, ANTHROPIC_API_KEY gerekir)
+- "gemini": Google Gemini (gerçek tanıma, ücretsiz GEMINI_API_KEY: aistudio.google.com)
+- "claude": Anthropic Claude (gerçek tanıma, ücretli ANTHROPIC_API_KEY)
 - "mock":   API anahtarı olmadan geliştirme/test; her fotoğrafa AYNI cevabı verir.
 `build_prompt` ve `parse_response` sağlayıcıdan bağımsızdır ve test edilmiştir.
 """
@@ -15,6 +16,10 @@ import json
 import re
 
 import anthropic
+import httpx
+from google import genai
+from google.genai import errors as genai_errors
+from google.genai import types as genai_types
 
 from ..config import settings
 from ..ingredients_list import COMMON_INGREDIENTS, normalize
@@ -141,10 +146,60 @@ class ClaudeVisionProvider(VisionProvider):
         return parse_response(text)
 
 
+class GeminiVisionProvider(VisionProvider):
+    """Google Gemini ile tanıma (ücretsiz kota). Kurallar Claude ile aynı: tek çağrı, tekrar yok, ~25 sn."""
+
+    is_demo = False
+
+    def __init__(self, api_key: str, model: str, timeout_ms: int = 25_000):
+        if not api_key:
+            raise VisionError("Yapay zekâ anahtarı (GEMINI_API_KEY) ayarlanmamış.")
+        self.model = model
+        self.client = genai.Client(
+            api_key=api_key,
+            http_options=genai_types.HttpOptions(
+                timeout=timeout_ms, retry_options=genai_types.HttpRetryOptions(attempts=1)
+            ),
+        )
+
+    def recognize(self, image: bytes, content_type: str) -> dict[str, list[str]]:
+        try:
+            response = self.client.models.generate_content(
+                model=self.model,
+                contents=[genai_types.Part.from_bytes(data=image, mime_type=content_type), build_prompt()],
+                config=genai_types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    response_json_schema=response_schema(),
+                ),
+            )
+        except httpx.TimeoutException as exc:
+            raise VisionError("Yapay zekâ zamanında cevap vermedi.") from exc
+        except genai_errors.ClientError as exc:
+            if exc.code == 429:
+                raise VisionError("Ücretsiz kota doldu, biraz sonra tekrar deneyin.") from exc
+            if exc.code in (400, 401, 403) and "API key" in str(exc):
+                raise VisionError("Yapay zekâ anahtarı geçersiz.") from exc
+            raise VisionError("Fotoğraf yapay zekâya gönderilemedi.") from exc
+        except genai_errors.ServerError as exc:
+            if exc.code in (503, 504):
+                raise VisionError("Yapay zekâ şu an çok yoğun, biraz sonra tekrar deneyin.") from exc
+            raise VisionError("Yapay zekâ servisinde bir hata oluştu.") from exc
+        except genai_errors.APIError as exc:
+            raise VisionError("Yapay zekâ servisinde bir hata oluştu.") from exc
+        except httpx.TransportError as exc:
+            raise VisionError("Yapay zekâ servisine bağlanılamadı.") from exc
+
+        if not response.text:  # güvenlik filtresi vb. yüzünden boş cevap
+            raise VisionError("Yapay zekâ bu fotoğrafı inceleyemedi.")
+        return parse_response(response.text)
+
+
 def get_provider() -> VisionProvider:
     name = settings.vision_provider.lower()
     if name == "mock":
         return MockVisionProvider()
+    if name == "gemini":
+        return GeminiVisionProvider(settings.gemini_api_key, settings.gemini_model)
     if name == "claude":
         return ClaudeVisionProvider(settings.anthropic_api_key)
     raise VisionError(f"Bilinmeyen yapay zekâ sağlayıcısı: {name}")

@@ -14,7 +14,7 @@ Bu dosya kod iskeletini, nasıl çalıştırılacağını ve **hangi parçanın 
 | Veritabanı şeması (users, ingredients, recipes, recipe_ingredients, favorites) | Çalışıyor (SQLite + PostgreSQL'de test edildi) |
 | 78 ortak malzeme listesi + arama (Türkçe de aranabilir) | Çalışıyor. Veri setindeki farklı yazımlar `ALIASES` ile ortak adlara çevrilir |
 | Fotoğraf yükleme (JPEG/PNG, en çok 10 MB, kaydedilmez) | Çalışıyor |
-| Yapay zekâ ile tanıma | Claude (Anthropic) ile çalışıyor, `ANTHROPIC_API_KEY` gerekir. Anahtar yoksa `mock` kullanılır, arayüz "Demo modu" uyarısı gösterir |
+| Yapay zekâ ile tanıma | Google Gemini (ücretsiz anahtar) ya da Claude (ücretli) ile çalışıyor. Anahtar yoksa `mock` kullanılır, arayüz "Demo modu" uyarısı gösterir |
 | Tarif eşleştirme (puan = tutan malzeme − eksik/2, eksikler gösterilir) | Çalışıyor, testli |
 | Favoriler | Çalışıyor, testli |
 | Admin tarif ekle/düzenle/sil (API) | Çalışıyor, testli. **Admin sayfası (arayüz) yok** |
@@ -34,7 +34,7 @@ Bu dosya kod iskeletini, nasıl çalıştırılacağını ve **hangi parçanın 
 
 ## Sıradaki işler (TODO)
 
-1. **Talha:** Claude sağlayıcısını (`vision.py`) gözden geçir, farklı buzdolabı fotoğraflarıyla dene. Prompt'u iyileştir.
+1. **Talha:** Gemini/Claude sağlayıcılarını (`vision.py`) gözden geçir, farklı buzdolabı fotoğraflarıyla dene. Prompt'u iyileştir.
 2. **İdil:** `ALIASES` tablosunu genişlet (sık geçen ama eşlenmeyen adlar). TheMealDB lisans/atıf şartını rapora yaz.
 3. **İdil:** Admin arayüz sayfası (`/admin`).
 4. **Umut:** Render'a ilk deploy; CI'ın yeşil olduğunu kontrol et.
@@ -53,8 +53,9 @@ python -m scripts.import_themealdb   # 790 gerçek tarif (internet gerekir, ~5 s
 uvicorn app.main:app --reload        # http://localhost:8000/docs
 pytest -q                            # testler
 ```
-Gerçek fotoğraf tanıma için `.env.example` dosyasını `.env` olarak kopyalayıp `VISION_PROVIDER=claude` ve
-`ANTHROPIC_API_KEY=...` girin (anahtar: console.anthropic.com). `.env` asla commit edilmez.
+Gerçek fotoğraf tanıma için `.env.example` dosyasını `.env` olarak kopyalayıp `VISION_PROVIDER=gemini` ve
+`GEMINI_API_KEY=...` girin. Ücretsiz anahtar: aistudio.google.com/apikey (Google hesabı yeterli, kart istemez).
+`.env` asla commit edilmez.
 PostgreSQL kullanmak için aynı dosyada `DATABASE_URL` girin.
 **Not:** Şema değişti (`recipe_ingredients.label`). Eski `snapfridge.db` varsa silip yukarıdaki iki betiği tekrar çalıştırın.
 Bir kullanıcıyı admin yapmak: `python -m scripts.make_admin email@ornek.com`

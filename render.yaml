@@ -14,8 +14,8 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: VISION_PROVIDER
-        value: claude
-      - key: ANTHROPIC_API_KEY
+        value: gemini
+      - key: GEMINI_API_KEY
         sync: false  # Render panelinden girilir, ASLA commit etmeyin
       - key: CORS_ORIGINS
         sync: false  # frontend adresi, Render panelinden girilir
