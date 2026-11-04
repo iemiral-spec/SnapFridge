@@ -12,13 +12,13 @@ Bu dosya kod iskeletini, nasıl çalıştırılacağını ve **hangi parçanın 
 |---|---|
 | Kayıt, giriş (JWT), User/Admin rolü | Çalışıyor, testli |
 | Veritabanı şeması (users, ingredients, recipes, recipe_ingredients, favorites) | Çalışıyor (SQLite + PostgreSQL'de test edildi) |
-| ~50 ortak malzeme listesi + arama | Çalışıyor |
+| 78 ortak malzeme listesi + arama (Türkçe de aranabilir) | Çalışıyor. Veri setindeki farklı yazımlar `ALIASES` ile ortak adlara çevrilir |
 | Fotoğraf yükleme (JPEG/PNG, en çok 10 MB, kaydedilmez) | Çalışıyor |
-| Yapay zekâ ile tanıma | **Sahte (mock) sağlayıcı.** Prompt ve cevap ayrıştırma hazır; gerçek sağlayıcı seçilmedi |
-| Tarif eşleştirme (çok malzeme tutan önce, eksikler gösterilir) | Çalışıyor, testli |
+| Yapay zekâ ile tanıma | Google Gemini (ücretsiz anahtar) ya da Claude (ücretli) ile çalışıyor. Anahtar yoksa `mock` kullanılır, arayüz "Demo modu" uyarısı gösterir |
+| Tarif eşleştirme (puan = tutan malzeme − eksik/2, eksikler gösterilir) | Çalışıyor, testli |
 | Favoriler | Çalışıyor, testli |
 | Admin tarif ekle/düzenle/sil (API) | Çalışıyor, testli. **Admin sayfası (arayüz) yok** |
-| TheMealDB içe aktarma betiği | Yazıldı, **denenmedi** (geliştirme ortamında internet kısıtlıydı) |
+| TheMealDB içe aktarma betiği | Çalışıyor: 790 tarif, resimleriyle |
 | React arayüzü (giriş, malzeme seçimi, sonuçlar, detay, favoriler) | Çalışıyor |
 | GitHub Actions CI, Render ayar dosyası | Taslak, ilk çalıştırmada kontrol edilmeli |
 
@@ -34,8 +34,8 @@ Bu dosya kod iskeletini, nasıl çalıştırılacağını ve **hangi parçanın 
 
 ## Sıradaki işler (TODO)
 
-1. **Talha:** Görsel destekli bir yapay zekâ sağlayıcısı seç (ücretsiz/öğrenci kotası). `vision.py` içinde `VisionProvider` alt sınıfı yaz, `get_provider`'a ekle. Tek çağrı, tekrar yok, ~25 sn zaman aşımı.
-2. **İdil:** `python -m scripts.import_themealdb` çalıştır; malzeme adlarının ortak listeyle uyuştuğunu kontrol et (ör. TheMealDB "chicken breast" der, liste "chicken" der → eşleştirme tablosu gerekebilir). TheMealDB lisans/atıf şartını rapora yaz.
+1. **Talha:** Gemini/Claude sağlayıcılarını (`vision.py`) gözden geçir, farklı buzdolabı fotoğraflarıyla dene. Prompt'u iyileştir.
+2. **İdil:** `ALIASES` tablosunu genişlet (sık geçen ama eşlenmeyen adlar). TheMealDB lisans/atıf şartını rapora yaz.
 3. **İdil:** Admin arayüz sayfası (`/admin`).
 4. **Umut:** Render'a ilk deploy; CI'ın yeşil olduğunu kontrol et.
 5. **Ahmet İlker:** Arayüzü güzelleştir, mobil görünümü kontrol et.
@@ -49,10 +49,15 @@ cd backend
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements-dev.txt
 python -m scripts.seed_sample        # 8 örnek tarif (SQLite: snapfridge.db)
+python -m scripts.import_themealdb   # 790 gerçek tarif (internet gerekir, ~5 sn)
 uvicorn app.main:app --reload        # http://localhost:8000/docs
 pytest -q                            # testler
 ```
-PostgreSQL kullanmak için `.env.example` dosyasını `.env` olarak kopyalayıp `DATABASE_URL` girin.
+Gerçek fotoğraf tanıma için `.env.example` dosyasını `.env` olarak kopyalayıp `VISION_PROVIDER=gemini` ve
+`GEMINI_API_KEY=...` girin. Ücretsiz anahtar: aistudio.google.com/apikey (Google hesabı yeterli, kart istemez).
+`.env` asla commit edilmez.
+PostgreSQL kullanmak için aynı dosyada `DATABASE_URL` girin.
+**Not:** Şema değişti (`recipe_ingredients.label`). Eski `snapfridge.db` varsa silip yukarıdaki iki betiği tekrar çalıştırın.
 Bir kullanıcıyı admin yapmak: `python -m scripts.make_admin email@ornek.com`
 
 **Frontend** (Node 22):
@@ -60,6 +65,7 @@ Bir kullanıcıyı admin yapmak: `python -m scripts.make_admin email@ornek.com`
 cd frontend
 npm install
 npm run dev                          # http://localhost:5173 (API'ye otomatik bağlanır)
+npm run dev -- --host                # telefondan denemek için: aynı Wi-Fi'de "Network" adresini açın
 ```
 
 ## API özeti

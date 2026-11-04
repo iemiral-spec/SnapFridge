@@ -51,6 +51,8 @@ class RecipeIngredient(Base):
     recipe_id: Mapped[int] = mapped_column(ForeignKey("recipes.id", ondelete="CASCADE"))
     ingredient_id: Mapped[int] = mapped_column(ForeignKey("ingredients.id"))
     measure: Mapped[str] = mapped_column(String(100), default="")
+    # Veri setindeki asıl yazım ("egg yolks"); eşleştirme ingredient.name ("egg") üzerinden yapılır.
+    label: Mapped[str] = mapped_column(String(100), default="")
     recipe: Mapped[Recipe] = relationship(back_populates="ingredients")
     ingredient: Mapped[Ingredient] = relationship(lazy="joined")
 

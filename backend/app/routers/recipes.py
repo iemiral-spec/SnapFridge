@@ -20,7 +20,7 @@ def match(body: MatchIn, db: Session = Depends(get_db)):
     candidates = [
         RecipeLike(r.id, r.title, [ri.ingredient.name for ri in r.ingredients], r.image_url) for r in recipes
     ]
-    return [RecipeMatch(**m.__dict__) for m in match_recipes(body.ingredients, candidates)]
+    return [RecipeMatch(**m.__dict__) for m in match_recipes(body.ingredients, candidates, limit=40)]
 
 
 @router.get("/{recipe_id}", response_model=RecipeDetail)
